@@ -9,7 +9,7 @@ from .serializers import NotesSerializer
 from rest_framework import permissions
 from note.permissions import IsOwnerOrReadOnly
 
-class PostList(generics.ListCreateAPIView):
+class NotesList(generics.ListCreateAPIView):
     queryset = NotesModel.objects.all()
     serializer_class = NotesSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
@@ -17,7 +17,7 @@ class PostList(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
 
-class PostDetail(generics.RetrieveUpdateDestroyAPIView):
+class NotesDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = NotesModel.objects.all()
     serializer_class = NotesSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly,

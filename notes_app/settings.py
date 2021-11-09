@@ -39,8 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'note',
     'account',
+    'note',
     'rest_framework',
     'corsheaders',
     'drf_yasg',
@@ -65,7 +65,12 @@ REST_FRAMEWORK = {
     ),    
     'DEFAULT_PERMISSION_CLASSES': (
     'rest_framework.permissions.IsAuthenticated',
-    )
+    ),
+    # 'DEFAULT_RENDERER_CLASSES': (
+    #     'rest_framework.renderers.TemplateHTMLRenderer',
+    #     'rest_framework.renderers.BrowsableAPIRenderer',
+    #     "rest_framework.renderers.JSONRenderer"
+    # )
 }
 
 
@@ -143,3 +148,15 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# swagger
+SWAGGER_SETTINGS = {
+'SECURITY_DEFINITIONS': {
+'basic': {'type': 'apiKey'},
+'api_key': {
+'type': 'apiKey',
+'in': 'header',
+'name': 'Authorization'
+}
+}
+}
