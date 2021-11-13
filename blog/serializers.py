@@ -8,3 +8,10 @@ class NoteSerializers(serializers.ModelSerializer):
     class Meta:
         model=NotesModel
         fields='__all__'
+
+class NoteSerializersForPut(serializers.ModelSerializer):
+    
+    class Meta:
+        model=NotesModel
+        fields=['title','body']
+

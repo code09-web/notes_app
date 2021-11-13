@@ -1,12 +1,33 @@
 <!DOCTYPE html>
 <html>
-<head>
-<title>Page Title</title>
-</head>
+ <head>
+   <title>students api</title>
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+ </head>
 <body>
-
-<h1>This is a Heading</h1>
-<p>This is a paragraph.</p>
-
+<div>
+   <button class="apireq">click me </button> 
+</div>
+<div id="jsonresp" style="margin-top: 100px">
+   <p><label> Title:</label> <span id="title"></span></p>
+   <p><label> Body:</label> <span id="body"></span></p>
+   <p><label> File : </label> <span id="file"></span></p> 
+</div>
+    <script type="text/javascript"></script>
 </body>
+<script>
+$('.apireq').click( function() {
+    $.ajax({
+             url : "http://127.0.0.1:8000/notes/9",
+             dataType: "json",
+             success : function (data) {
+                       
+                      $('#id').text( data.id);
+                      $('#title').text( data.title);
+                      $('#body').text( data.body);
+                      $('#file').text( data[0].file);
+                    }
+                 });
+             });
+</script>
 </html>

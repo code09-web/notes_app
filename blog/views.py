@@ -3,23 +3,21 @@ from rest_framework.response import Response
 from rest_framework import status 
 from rest_framework import permissions
 from .models import NotesModel
-from .serializers import NoteSerializers
+from .serializers import NoteSerializers,NoteSerializersForPut
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework.generics import GenericAPIView
 
-
-class NotesView(APIView):
+class NotesView(GenericAPIView):
     
     # 1. list all
+    serializer_class=NoteSerializers
     permission_classes = [permissions.IsAuthenticated]
-
-
     def get(self,request,*args,**kwargs):
         notes=NotesModel.objects.filter(user=request.user.id)
         serializer=NoteSerializers(notes,many=True)
         return Response(serializer.data,status=status.HTTP_200_OK)
     
     # 2. Create
-    @csrf_exempt
     def post(self,request,*args,**kwargs):
         
         data={
@@ -38,7 +36,8 @@ class NotesView(APIView):
 
 
 
-class NotesDetailView(APIView):
+class NotesDetailView(GenericAPIView):
+    serializer_class=NoteSerializersForPut
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     
     def get_object(self,notes_id,user_id=None):
@@ -66,7 +65,7 @@ class NotesDetailView(APIView):
             notes_instance=self.get_object(notes_id,request.user.id)
         if not notes_instance:
             return Response(
-                {"res": "Object with todo id does not exists"},
+                {"res": "Object with notes id does not exists"},
                 status=status.HTTP_400_BAD_REQUEST
             )
         serializer=NoteSerializers(notes_instance)
@@ -81,15 +80,15 @@ class NotesDetailView(APIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
         data={
-            'title':request.data.get('task'),
+            'title':request.data.get('title'),
             'body':request.data.get('body'),
             'user':request.user.id
         }
-        serializer=NoteSerializers(instance=notes_instance,data=data,partial=True)
+        serializer=NoteSerializersForPut(instance=notes_instance,data=data,partial=True)
 
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data,status=status.HTTP_200_OK)
+            return Response({"data":serializer.data,"message":"updated successfully "},status=status.HTTP_200_OK)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
     
         # 5. Delete
@@ -105,7 +104,7 @@ class NotesDetailView(APIView):
             )
         todo_instance.delete()
         return Response(
-            {"res": "Object deleted!"},
+            {"res": "Note has been deleted!"},
             status=status.HTTP_200_OK
         )
 

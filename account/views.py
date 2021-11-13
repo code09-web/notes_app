@@ -5,9 +5,11 @@ from rest_framework import exceptions
 from rest_framework.permissions import AllowAny
 from .auth import generate_access_token, generate_refresh_token
 from rest_framework.generics import GenericAPIView
+from django.shortcuts import render
+from django.contrib.auth.models import User
 # .......................................... Registration ................................................
 class UserRegisterView(GenericAPIView):
-    serializers_classes=RegisterSerializer
+    serializer_class=RegisterSerializer
     permission_classes=[AllowAny]
     def post(self,request,format=None):
         
@@ -25,6 +27,9 @@ class UserRegisterView(GenericAPIView):
 
 # ............................login using apiview .....................................
 class UserLoginView(GenericAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    # serializers_class=UserSerializer
     permission_classes=[AllowAny]
     def post(self ,request,format=None):
         User=get_user_model()
@@ -48,6 +53,8 @@ class UserLoginView(GenericAPIView):
         response.set_cookie(key='refreshtoken',value=refresh_token,httponly=True)
         response.data={
             'access_token':access_token,
+            'refresh_token':refresh_token,
             'user':serialzied_user,
         }
         return response
+

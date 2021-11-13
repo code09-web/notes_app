@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'drf_yasg',
+    'UI',
 ]
 
 MIDDLEWARE = [
@@ -66,11 +67,14 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
     'rest_framework.permissions.IsAuthenticated',
     ),
-    # 'DEFAULT_RENDERER_CLASSES': (
-    #     'rest_framework.renderers.TemplateHTMLRenderer',
-    #     'rest_framework.renderers.BrowsableAPIRenderer',
-    #     "rest_framework.renderers.JSONRenderer"
-    # )
+        'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        # 'rest_framework.renderers.BrowsableAPIRenderer',
+    ],
+    
+    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    # 'PAGE_SIZE': 2
+
 }
 
 
@@ -143,6 +147,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -151,12 +158,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # swagger
 SWAGGER_SETTINGS = {
-'SECURITY_DEFINITIONS': {
-'basic': {'type': 'apiKey'},
-'api_key': {
-'type': 'apiKey',
-'in': 'header',
-'name': 'Authorization'
+    'SECURITY_DEFINITIONS': {
+        'Auth Token eg [Bearer (JWT) ]': {
+            'type': 'apiKey',
+            'in': 'header',
+            'name': 'Authorization',
+        }
+    }
+   
 }
-}
-}
+GLOBAL_CSRF_CHECK = False

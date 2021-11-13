@@ -37,9 +37,4 @@ class JWTAuthentication(BaseAuthentication):
         return (user,None)
     
     def enforce_csrf(self,request):
-        check=CSRFCheck()
-        check.process_request(request)
-        reason=check.process_view(request,None,(),{})
-        print(reason)
-        if reason:
-            raise exceptions.PermissionDenied('CSRF Failed : %s'%reason)
+        return

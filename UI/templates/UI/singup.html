@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Signup page</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="">
+</head>
+
+<body>
+    <form action="" method="post" id="register-form">
+        <div class="container">
+            <label for="uname"><b>Username</b></label>
+            <input type="text" placeholder="Enter Username" name="username" id="username" class="username">
+
+            <label for="email"><b>Email</b></label>
+            <input type="email" placeholder="Enter email" name="email" id="email" class="email">
+            <label for="first_name">Firstname<b></b></label>
+            <input type="text" placeholder="firstname" name="firstname" id="firstname" class="firstname">
+            <label for="last_name"><b>Lastname</b></label>
+            <input type="text" placeholder="lastname" name="lastname" id="lastname" class="lastname">
+            <label for="psw"><b>password</b></label>
+            <input type="password" placeholder="Enter Password" name="password" id="password" class="password">
+            <label for="psw"><b>Password</b></label>
+            <input type="password" placeholder="Confirm Password" name="password2" id="password2" class="password2">
+
+            <button type="submit" value="submit" name="submit">SignUp</button>
+        </div>
+
+    </form>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+        integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        $("#register-form").submit(function (event) {
+            event.preventDefault();
+            let username = document.getElementById("username").value;
+            let email = document.getElementById("email").value;
+            let firstname = document.getElementById("firstname").value;
+            let lastname = document.getElementById("lastname").value;
+            let password = document.getElementById("password").value;
+            let password2 = document.getElementById("password2").value;
+            console.log(username)
+            $.ajax({
+                url: "http://127.0.0.1:8000/users/register",
+                type: "POST",
+                dataType: "json",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    'email': email,
+                    'first_name': firstname,
+                    'last_name': lastname,
+                    'password': password,
+                    'password2': password2,
+                    'username': username,
+
+                }),
+                success: function (data) {
+                    console.log(data);
+                },
+
+                error: function (e) {
+                    console.log(e);
+                    consloe.log('errror')
+                },
+
+
+            });
+
+        });
+    </script>
+</body>
+
+</html>
