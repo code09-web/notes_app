@@ -11,3 +11,6 @@ def create_notes(request):
 
 def singup(request):
     return render(request,'UI/singup.html')
+
+def details(request):
+    return render(request,'UI/details_page.html')

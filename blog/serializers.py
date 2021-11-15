@@ -13,5 +13,5 @@ class NoteSerializersForPut(serializers.ModelSerializer):
     
     class Meta:
         model=NotesModel
-        fields=['title','body']
+        fields=['title','body','image']
 

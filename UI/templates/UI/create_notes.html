@@ -1,59 +1,61 @@
-
 <!DOCTYPE html>
 <html>
 
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Create Notes</title>
+    <title>Signup page</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="">
+    <style>
+        .success {
+            color: red;
+        }
+    </style>
 </head>
 
 <body>
-    <form action="{% url 'notes_api' %}" method="post" id="login-form">
+    <form action="" method="post" id="post-form" enctype="multipart/form-data">
         <div class="container">
-            <label for="uname"><b>Title</b></label>
-            <input type="text" placeholder="title" name="title" id="title" class="title">
+            <label for="title"><b>title</b></label>
+            <input type="text" placeholder="Enter title" name="title" id="title" class="title">
 
-            <label for="psw"><b>Body</b></label>
-            <input type="text" placeholder="Body" name="title" id="body" class="title">
+            <label for="body"><b>body</b></label>
+            <input type="text" placeholder="Enter Msg" name="body" id="body" class="body">
+            <label for="body"><b>Image</b></label>
+            <input type="file" id="image" name="image">
 
-            <button type="submit" value="submit" name="submit">Create Note</button>
+            <button type="submit" value="upload" name="submit">Create Notes</button>
         </div>
-
     </form>
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"
         integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+    {% comment %} <!--------------------------- Ajax Api Call ---------------------------------> {% endcomment %}
     <script type="text/javascript">
-        $("#login-form").submit(function (event) {
+        $("#post-form").submit(function (event) {
             event.preventDefault();
-            let title = document.getElementById("title").value;
-            let body = document.getElementById("body").value;
+            let formData = new FormData(this);
             $.ajax({
                 url: "http://127.0.0.1:8000/notes",
                 headers: {
                     'Authorization': `Bearer ${window.localStorage.getItem('refresh_token')}`
                 },
-                type: "Post",
+                type: 'POST',
                 dataType: 'json',
-                contentType: "application/json",
-                data: JSON.stringify({
-                    'title': title,
-                    'body': body,
-                }),
+                contentType: false,
+                processData: false,
+                data: formData,
                 success: function (data) {
-                window.location.href = "http://127.0.0.1:8000/home";
-                },
+                    console.log(data);
+                    window.location.href = "/create";
 
-                error: function (e) {
-                    console.log(e);
-                },
-            }); // end ajax
+                }
+            });
+
         });
     </script>
-
 </body>
 
 </html>
